@@ -5,7 +5,7 @@ sha256 = []
 md5 = []
 
 def load_archives(name_archive, nameList):
-  f = open(name_archive, "r") 
+  f = open(name_archive, "r", encoding="utf-8") 
 
   for x in f:
     nameList.append(x.strip())
@@ -24,10 +24,10 @@ def main():
     bSha256 = False
     bMD5 = False
     
-    if hl.sha256(phrases[i].encode('utf-8')).hexdigest() == sha256[i]:
+    if hl.sha256(phrases[i].encode('utf-8')).hexdigest().strip() == sha256[i]:
       bSha256 = True
 
-    if hl.md5(phrases[i].encode('utf-8')).hexdigest() == md5[i]:
+    if hl.md5(phrases[i].encode('utf-8')).hexdigest().strip() == md5[i]:
       bMD5 = True
 
     if bSha256 and bMD5:
@@ -39,7 +39,9 @@ def main():
     else:
       completeText = "Ambos estão incorretos"
 
-    print("Frase: " + phrases[i] + "\n" +  completeText + "\n")
+    #print(hl.sha256(phrases[i].encode('utf-8')).hexdigest().strip())
+    #print(sha256[i])
+    print("Frase: " + phrases[i] + "\n" + "SHA256 Esperado: " + sha256[i] + "\t SHA256 Real: " + hl.sha256(phrases[i].encode('utf-8')).hexdigest().strip() + "\n" + "MD5 Esperado: " + md5[i] + " \t MD5 Real: " + hl.md5(phrases[i].encode('utf-8')).hexdigest().strip() + "\n" +  completeText + "\n")
 
 if __name__ == "__main__":
   main()
